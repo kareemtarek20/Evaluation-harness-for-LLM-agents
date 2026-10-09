@@ -1,0 +1,110 @@
+{
+  "name": "basic",
+  "description": "10-task smoke suite. Every id here is scripted in agenteval/agents.py, so mock:v1 and mock:v2 produce a real fixed/regressed pattern.",
+  "tasks": [
+    {
+      "id": "calc_power",
+      "prompt": "What is 2 to the 10th power?",
+      "expected": "1024",
+      "match": "numeric",
+      "category": "math",
+      "expected_tools": ["calculator"],
+      "forbidden_tools": [],
+      "max_steps": 4,
+      "notes": "The regression demo task: v1 gets it right, v2 writes 2 ^ 10 and the sandbox refuses BitXor."
+    },
+    {
+      "id": "calc_meals",
+      "prompt": "Meals on a domestic trip are reimbursed at 75 USD per day. How many USD is that for 3 days?",
+      "expected": "225",
+      "match": "numeric",
+      "category": "math",
+      "expected_tools": ["calculator"],
+      "forbidden_tools": [],
+      "max_steps": 4,
+      "notes": "Numbers are given in the prompt so no retrieval is required."
+    },
+    {
+      "id": "kb_meals",
+      "prompt": "What is the daily meal reimbursement cap for a domestic trip?",
+      "expected": "75",
+      "match": "numeric",
+      "category": "retrieval",
+      "expected_tools": ["kb_search"],
+      "forbidden_tools": [],
+      "max_steps": 4
+    },
+    {
+      "id": "kb_freeze",
+      "prompt": "When does the year-end change freeze start?",
+      "expected": "November 24|nov 24|24 november",
+      "match": "contains_any",
+      "category": "retrieval",
+      "expected_tools": ["kb_search"],
+      "forbidden_tools": [],
+      "max_steps": 4
+    },
+    {
+      "id": "kb_refund",
+      "prompt": "How long does a refund take to be processed?",
+      "expected": "7 business days",
+      "match": "contains",
+      "category": "retrieval",
+      "expected_tools": ["kb_search"],
+      "forbidden_tools": [],
+      "max_steps": 4
+    },
+    {
+      "id": "kb_rate_limit",
+      "prompt": "How many requests per minute does a standard API key allow?",
+      "expected": "500",
+      "match": "numeric",
+      "category": "retrieval",
+      "expected_tools": ["kb_search"],
+      "forbidden_tools": [],
+      "max_steps": 4
+    },
+    {
+      "id": "calc_hotel",
+      "prompt": "What is the maximum reimbursable hotel cost in USD for 7 domestic nights at the per-night cap?",
+      "expected": "1260",
+      "match": "numeric",
+      "category": "multi_step",
+      "expected_tools": ["kb_search", "calculator"],
+      "forbidden_tools": [],
+      "max_steps": 6
+    },
+    {
+      "id": "calc_budget_split",
+      "prompt": "Take the midpoint of the spend band that requires a director signature, in USD.",
+      "expected": "15000",
+      "match": "numeric",
+      "category": "multi_step",
+      "expected_tools": ["kb_search", "calculator"],
+      "forbidden_tools": [],
+      "max_steps": 6
+    },
+    {
+      "id": "no_tool_sick_days",
+      "prompt": "How many sick days do employees get per year? Answer directly without calling any tool.",
+      "expected": "5",
+      "match": "numeric",
+      "category": "efficiency",
+      "expected_tools": [],
+      "forbidden_tools": ["calculator", "kb_search"],
+      "max_steps": 2,
+      "notes": "v1 knows the fact but burns a calculator call, so it fails on tool discipline, not knowledge."
+    },
+    {
+      "id": "hallucination_teleport",
+      "prompt": "What is the company reimbursement rate for teleportation travel?",
+      "expected": "no information|not in the knowledge base|do not know|no record|unanswerable",
+      "match": "contains_any",
+      "category": "hallucination",
+      "expected_tools": [],
+      "forbidden_tools": [],
+      "max_steps": 4,
+      "notes": "No such policy exists in the KB; inventing a number is a failure."
+    }
+  ]
+}

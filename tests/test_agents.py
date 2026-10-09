@@ -1,11 +1,13 @@
 """Stage 3 tests: agent behaviour that the harness depends on."""
 
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
 import pytest
 
 from agenteval.agents import (
+    MOCK_SCRIPTS,
     MODEL_ENV_VAR,
     AnthropicAgent,
     MockAgent,
@@ -13,6 +15,7 @@ from agenteval.agents import (
 )
 from agenteval.models import AgentResult, FailureMode, MatchType, Task, ToolCall
 from agenteval.scoring import MAX_STEPS_REASON, score_trial
+from agenteval.taskset import load_task_file
 from agenteval.tools import ToolBox
 
 
@@ -207,6 +210,20 @@ def test_anthropic_agent_exception_becomes_agent_error() -> None:
     assert result.crashed
     assert "RuntimeError" in (result.error or "")
     assert score_trial(make_task("calc_power"), result)[3] is FailureMode.AGENT_ERROR
+
+
+def test_mock_scripts_cover_the_basic_suite() -> None:
+    """The regression demo only works if every basic task is scripted in both versions."""
+    basic = Path(__file__).resolve().parent.parent / "tasks" / "basic.json"
+    task_ids = {task.id for task in load_task_file(basic)}
+    for version, script in MOCK_SCRIPTS.items():
+        missing = task_ids - set(script)
+        assert not missing, f"mock:{version} has no script for {sorted(missing)}"
+
+
+def test_unknown_mock_version_rejected() -> None:
+    with pytest.raises(ValueError, match="unknown mock version"):
+        MockAgent("v3")
 
 
 def test_anthropic_agent_uses_advertised_schemas() -> None:

@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "run_id": "20261009T130615Z-07741569",
+  "agent": "mock:v1",
+  "model": "",
+  "label": "stage-3 verify",
+  "task_source": "inline-sample",
+  "trials_per_task": 1,
+  "started_at": "2026-10-09T13:06:15+00:00",
+  "finished_at": "2026-10-09T13:06:15+00:00",
+  "config": {},
+  "prices": {
+    "input_per_mtok": 3.0,
+    "output_per_mtok": 15.0,
+    "source": "demo"
+  },
+  "task_ids": [
+    "calc_power",
+    "kb_meals",
+    "no_tool_sick_days",
+    "hallucination_teleport"
+  ],
+  "results": [
+    {
+      "task_id": "calc_power",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.106,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.001206,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.006,
+      "input_tokens": 114,
+      "output_tokens": 54,
+      "cost_usd": 0.001152,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 114,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.03,
+      "input_tokens": 81,
+      "output_tokens": 63,
+      "cost_usd": 0.001188,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 81,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.005,
+      "input_tokens": 114,
+      "output_tokens": 48,
+      "cost_usd": 0.001062,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 114,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    }
+  ]
+}
