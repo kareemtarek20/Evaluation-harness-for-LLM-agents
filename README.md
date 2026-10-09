@@ -166,6 +166,11 @@ exit code    -> 1  (intentional: mock v2 keeps one regression on purpose)
 viewer       -> site/trace-demo.html  (50 trial cards, 5 of them failures)
 ```
 
+That block was verified by cloning this repository into a fresh temp directory and
+running it there exactly as written - no `pip install`, no API key, no network -
+together with `python -m pytest -q` (211 passed) and `python -m ruff check .`
+(clean) in the same clone.
+
 To get the `agenteval` command name used in CI, and the dev tools:
 
 ```bash
@@ -173,6 +178,10 @@ pip install -e ".[dev]"
 agenteval --help
 python -m pytest -q && python -m ruff check .
 ```
+
+That editable install is what the CI job uses; it was not run in this offline
+environment, so if you skip it use `python -m agenteval.cli` everywhere the docs
+say `agenteval`.
 
 ## 8. Evaluating a real agent
 
@@ -285,18 +294,18 @@ trials per task, reports per-task pass rates, and flags flaky tasks with
 `0 < passes < trials`. The cost is linear and stated up front: N=5 multiplies
 token spend by 5.
 
-**Significance is a two-sided Fisher exact test, computed in `math.comb`.** The
-comparison per task is a 2x2 table (base passes/fails vs new passes/fails). At 5
-trials the smallest possible p-value is 1/126 = 0.0079 (5/5 -> 0/5), while 3/5 -> 2/5
-comes out at p=1.000 and 4/5 -> 1/5 at p=0.206 - precisely the "don't gate that"
-cases — the exact tail is both the right tool for
-sparse tables and cheap enough to compute without a dependency (enumerate all
-tables with the same margins, sum the probabilities <= the observed one). Above
-200 combined trials the enumeration stops being cheap, so `stats.py` switches to
-a two-proportion z-test; that boundary is tested, not assumed. Two honesty rules
-sit on top: improvements never gate, and a run whose tasks have one trial each
-gates on any regression (`method="single-trial"`) because there is no noise
-model to hide behind — the CI demo relies on exactly that.
+**Significance is a two-sided Fisher exact test, computed with `math.comb`.** The
+comparison per task is a 2x2 table (base passes/fails vs new passes/fails). At
+five trials the smallest possible p-value is 1/126 = 0.0079, which 5/5 -> 0/5
+hits, while 3/5 -> 2/5 comes out at p=1.000 and 4/5 -> 1/5 at p=0.206 - exactly
+the "don't gate that" cases. The exact tail is both the right tool for sparse
+tables and cheap enough to compute without a dependency: enumerate every table
+with the same margins and sum the probabilities at or below the observed one.
+Above 200 combined trials that enumeration stops being cheap, so `stats.py`
+switches to a two-proportion z-test; the boundary is tested, not assumed. Two
+honesty rules sit on top: improvements never gate, and a run with one trial per
+task gates on any regression (`method="single-trial"`) because there is no noise
+model to hide behind - the CI demo relies on exactly that.
 
 **Severity-ordered single label.** `classify()` walks
 `agent_error > max_steps > forbidden_tool > missing_tool > tool_error >
