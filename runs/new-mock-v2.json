@@ -1,0 +1,435 @@
+{
+  "schema_version": 1,
+  "run_id": "20261009T131913Z-e3175621",
+  "agent": "mock:v2",
+  "model": "",
+  "label": "candidate v2",
+  "task_source": "tasks\\basic.json",
+  "trials_per_task": 1,
+  "started_at": "2026-10-09T13:19:13+00:00",
+  "finished_at": "2026-10-09T13:19:13+00:00",
+  "config": {
+    "system_preset": "",
+    "max_tokens": "",
+    "temperature": ""
+  },
+  "prices": {
+    "input_per_mtok": 3.0,
+    "output_per_mtok": 15.0,
+    "source": "cli-override"
+  },
+  "task_ids": [
+    "calc_power",
+    "calc_meals",
+    "kb_meals",
+    "kb_freeze",
+    "kb_refund",
+    "kb_rate_limit",
+    "calc_hotel",
+    "calc_budget_split",
+    "no_tool_sick_days",
+    "hallucination_teleport"
+  ],
+  "categories": {
+    "calc_power": "math",
+    "calc_meals": "math",
+    "kb_meals": "retrieval",
+    "kb_freeze": "retrieval",
+    "kb_refund": "retrieval",
+    "kb_rate_limit": "retrieval",
+    "calc_hotel": "multi_step",
+    "calc_budget_split": "multi_step",
+    "no_tool_sick_days": "efficiency",
+    "hallucination_teleport": "hallucination"
+  },
+  "results": [
+    {
+      "task_id": "calc_power",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "tool_error",
+      "steps": 2,
+      "latency_ms": 0.06,
+      "input_tokens": 117,
+      "output_tokens": 63,
+      "cost_usd": 0.001296,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Cannot compute, the tool failed.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ^ 10"
+            },
+            "output": "error: unsafe expression (unsupported syntax: BitXor)",
+            "is_error": true
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 63,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.031,
+      "input_tokens": 156,
+      "output_tokens": 63,
+      "cost_usd": 0.001413,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 225 USD total.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "75 * 3"
+            },
+            "output": "225",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 63,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.374,
+      "input_tokens": 129,
+      "output_tokens": 99,
+      "cost_usd": 0.001872,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "meal per diem domestic"
+            },
+            "output": "[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.\n[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 99,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.315,
+      "input_tokens": 117,
+      "output_tokens": 93,
+      "cost_usd": 0.001746,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "change freeze start date"
+            },
+            "output": "[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 93,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.527,
+      "input_tokens": 123,
+      "output_tokens": 81,
+      "cost_usd": 0.001584,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "[fin-refunds] Refund policy :: Refunds are processed within 7 business days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "refund processing days"
+            },
+            "output": "[fin-refunds] Refund policy :: Refunds are processed within 7 business days.\n[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.\n[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 81,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.338,
+      "input_tokens": 129,
+      "output_tokens": 96,
+      "cost_usd": 0.001827,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "API rate limit requests per minute"
+            },
+            "output": "[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.\n[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.\n[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 96,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 3,
+      "latency_ms": 0.352,
+      "input_tokens": 195,
+      "output_tokens": 108,
+      "cost_usd": 0.002205,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The cap is 180 per night, so 7 nights is 1260 USD.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "hotel cap per night domestic"
+            },
+            "output": "[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.\n[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.\n[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.",
+            "is_error": false
+          },
+          {
+            "step": 2,
+            "tool": "calculator",
+            "input": {
+              "expression": "180 * 7"
+            },
+            "output": "1260",
+            "is_error": false
+          }
+        ],
+        "steps": 3,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 108,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 3,
+      "latency_ms": 0.276,
+      "input_tokens": 186,
+      "output_tokens": 96,
+      "cost_usd": 0.001998,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Midpoint of the director band is 15000 USD.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "spend approval thresholds"
+            },
+            "output": "[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.",
+            "is_error": false
+          },
+          {
+            "step": 2,
+            "tool": "calculator",
+            "input": {
+              "expression": "(5000 + 25000) / 2"
+            },
+            "output": "15000",
+            "is_error": false
+          }
+        ],
+        "steps": 3,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 96,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 1,
+      "latency_ms": 0.005,
+      "input_tokens": 93,
+      "output_tokens": 45,
+      "cost_usd": 0.000954,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days per year.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 45,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 0,
+      "agent": "mock:v2",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.208,
+      "input_tokens": 123,
+      "output_tokens": 78,
+      "cost_usd": 0.001539,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "There is no information about that in the knowledge base.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "kb_search",
+            "input": {
+              "query": "teleportation reimbursement"
+            },
+            "output": "No matching records for query: teleportation reimbursement",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 78,
+        "model": "mock:v2",
+        "finish_reason": "stop"
+      }
+    }
+  ]
+}

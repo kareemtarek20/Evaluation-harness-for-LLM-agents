@@ -144,6 +144,7 @@ def run_suite(
         "config": dict(config or {}),
         "prices": price_table.to_dict(),
         "task_ids": [task.id for task in tasks],
+        "categories": {task.id: task.category for task in tasks},
         "results": [trial.to_dict() for trial in trials_results],
     }
 
