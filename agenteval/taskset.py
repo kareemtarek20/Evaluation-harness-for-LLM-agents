@@ -4,7 +4,6 @@ A task file is either a JSON array of tasks or an object with a ``tasks``
 array. Loading is strict on purpose: a typo in a tool name or a duplicated id
 silently corrupts a comparison run, so it fails loudly here instead.
 """
-
 from __future__ import annotations
 
 import json
@@ -13,16 +12,50 @@ from typing import Any
 
 from agenteval.models import MatchType, Task, task_list
 
-__all__ = ["discover_task_files", "load_task_file", "load_tasks", "validate_task_files"]
+__all__ = [
+    "classify_directory",
+    "discover_task_files",
+    "load_task_file",
+    "load_tasks",
+    "validate_task_files",
+]
 
 
-def discover_task_files(directory: Path | str) -> list[Path]:
-    """Return sorted task JSON files in a directory, skipping hidden files."""
-    return sorted(
+def _is_task_suite(path: Path) -> bool:
+    """True when a JSON file holds task objects rather than another dataset.
+
+    ``tasks/`` also carries the judge label sheet, whose shape is
+    ``{"entries": [...]}``. Loading that as a suite would be a confusing crash,
+    so directory scans recognise it and leave it to its own tooling. A file that
+    cannot be parsed at all is still returned here, so the loader reports it.
+    """
+    try:
+        with path.open(encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return True
+    if isinstance(data, list):
+        return bool(data) and all(isinstance(item, dict) and "id" in item for item in data)
+    if isinstance(data, dict):
+        return "tasks" in data
+    return False
+
+
+def classify_directory(directory: Path | str) -> tuple[list[Path], list[Path]]:
+    """Split a directory's JSON into ``(task suites, other datasets)``."""
+    candidates = sorted(
         path
         for path in Path(directory).glob("*.json")
         if path.is_file() and not path.name.startswith(".")
     )
+    suites = [path for path in candidates if _is_task_suite(path)]
+    others = [path for path in candidates if path not in suites]
+    return suites, others
+
+
+def discover_task_files(directory: Path | str) -> list[Path]:
+    """Return sorted task JSON files in a directory, skipping hidden files."""
+    return classify_directory(directory)[0]
 
 
 def _extract_payloads(path: Path) -> list[dict[str, Any]]:

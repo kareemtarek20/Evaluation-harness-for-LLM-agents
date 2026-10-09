@@ -7,6 +7,7 @@ import pytest
 
 from agenteval.models import MatchType
 from agenteval.taskset import (
+    classify_directory,
     discover_task_files,
     load_task_file,
     load_tasks,
@@ -30,7 +31,17 @@ def test_every_shipped_task_file_is_valid() -> None:
     assert validate_task_files(suite_files()) == []
 
 
-@pytest.mark.parametrize("path", sorted(TASKS_DIR.glob("*.json")), ids=lambda p: p.name)
+def test_the_judge_sheet_is_not_mistaken_for_a_task_suite() -> None:
+    """tasks/judge_labels.json lives beside the suites but must not load as one."""
+    suites, others = classify_directory(TASKS_DIR)
+    names = [path.name for path in suites]
+    assert "basic.json" in names and "extended.json" in names
+    assert [path.name for path in others] == ["judge_labels.json"]
+    # ...and the strict loader really would have refused it
+    assert validate_task_files([TASKS_DIR / "judge_labels.json"]) != []
+
+
+@pytest.mark.parametrize("path", sorted(discover_task_files(TASKS_DIR)), ids=lambda p: p.name)
 def test_each_file_loads_with_required_fields(path: Path) -> None:
     tasks = load_task_file(path)
     assert tasks

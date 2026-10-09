@@ -13,10 +13,16 @@ from pathlib import Path
 from typing import Any
 
 from agenteval.agents import SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2, AnthropicAgent, MockAgent
+from agenteval.judge import AnthropicJudge
 from agenteval.pricing import PriceTable
 from agenteval.reporting import compare, render_comparison, render_summary, summarize
 from agenteval.runner import load_run, run_suite, save_run
-from agenteval.taskset import load_tasks, validate_task_files
+from agenteval.taskset import (
+    classify_directory,
+    discover_task_files,
+    load_tasks,
+    validate_task_files,
+)
 
 __all__ = ["build_parser", "main"]
 
@@ -49,10 +55,20 @@ def _task_paths(values: list[str]) -> list[Path]:
     for value in values:
         path = Path(value)
         if path.is_dir():
-            paths.extend(sorted(path.glob("*.json")))
+            paths.extend(discover_task_files(path))
         else:
             paths.append(path)
     return paths
+
+
+def build_judge(args: argparse.Namespace) -> AnthropicJudge | None:
+    """Construct the judge when ``--judge`` was passed, or explain why it cannot run."""
+    if not args.judge:
+        return None
+    try:
+        return AnthropicJudge(model=args.judge_model)
+    except RuntimeError as exc:
+        raise SystemExit(f"--judge needs a model: {exc}") from exc
 
 
 def cmd_run(args: argparse.Namespace) -> int:
@@ -64,17 +80,26 @@ def cmd_run(args: argparse.Namespace) -> int:
     prices = PriceTable.for_model(
         model, input_price=args.input_price, output_price=args.output_price
     )
+    judge = build_judge(args)
+    judge_tasks = sum(1 for task in tasks if task.match.value == "judge")
+    if judge_tasks and judge is None:
+        print(
+            f"note: {judge_tasks} task(s) are judge-scored and will fail without --judge",
+            file=sys.stderr,
+        )
     artifact = run_suite(
         tasks,
         agent,
         trials=args.trials,
         prices=prices,
+        judge=judge,
         task_source=",".join(str(path) for path in paths),
         label=args.label,
         config={
             "system_preset": args.system if model else "",
             "max_tokens": args.max_tokens if model else "",
             "temperature": args.temperature if model else "",
+            "judge": judge.name if judge is not None else "",
         },
     )
     default_name = f"{artifact['run_id']}-{_slug(args.agent)}.json"
@@ -87,6 +112,12 @@ def cmd_run(args: argparse.Namespace) -> int:
     else:
         print(render_summary(summary))
         print(f"\nsaved run -> {destination}")
+    if judge is not None:
+        note = (
+            f"judge: {judge.calls} calls, {judge.input_tokens} in / {judge.output_tokens} out"
+            f" tokens, ${judge.cost_usd:.4f} (not included in the run cost above)"
+        )
+        print(note, file=sys.stderr if args.json else sys.stdout)
     return 0
 
 
@@ -138,6 +169,12 @@ def cmd_validate(args: argparse.Namespace) -> int:
     categories: dict[str, int] = {}
     for task in tasks:
         categories[task.category] = categories.get(task.category, 0) + 1
+    for value in args.tasks:
+        directory = Path(value)
+        if directory.is_dir():
+            ignored = classify_directory(directory)[1]
+            if ignored:
+                print("not task suites (left alone): " + ", ".join(p.name for p in ignored))
     print(f"ok: {len(tasks)} tasks in {len(paths)} file(s); categories: {categories}")
     return 0
 
@@ -169,6 +206,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     run.add_argument("--max-tokens", type=int, default=1024)
     run.add_argument("--temperature", type=float, default=0.0)
+    run.add_argument(
+        "--judge",
+        action="store_true",
+        help="grade match:judge tasks with an LLM judge (needs AGENTEVAL_MODEL + API key)",
+    )
+    run.add_argument("--judge-model", help="model for the judge (default: AGENTEVAL_MODEL)")
     run.add_argument("--input-price", type=float, help="USD per million input tokens")
     run.add_argument("--output-price", type=float, help="USD per million output tokens")
     run.add_argument("--json", action="store_true", help="print the summary as JSON")
