@@ -11,6 +11,12 @@ Nothing here needs an API key. The offline demo and the whole test suite run on
 the standard library alone (`anthropic` is imported lazily, only when you build a
 real agent or judge).
 
+`run.bat` on Windows is the same demo as a double-click: it runs both mock
+configurations at `--trials 5`, prints the gate's verdict in plain words, writes
+`runs/demo-v1.json` and `runs/demo-v2.json`, and opens the trace page. It needs
+neither `pip install` nor a key, and its outputs are gitignored. Pass
+`--no-pause` to skip the browser and the final keypress.
+
 ```bash
 python -m pytest -q            # 211 tests, no network
 python -m ruff check .         # must be clean

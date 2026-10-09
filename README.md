@@ -166,6 +166,11 @@ exit code    -> 1  (intentional: mock v2 keeps one regression on purpose)
 viewer       -> site/trace-demo.html  (50 trial cards, 5 of them failures)
 ```
 
+Prefer a double-click? `run.bat` at the project root runs exactly this
+sequence, prints a plain-language verdict, and opens the trace page in your
+browser. `run.bat --no-pause` is the same run without the browser or the
+keypress, for scripts and CI.
+
 That block was verified by cloning this repository into a fresh temp directory and
 running it there exactly as written - no `pip install`, no API key, no network -
 together with `python -m pytest -q` (211 passed) and `python -m ruff check .`
