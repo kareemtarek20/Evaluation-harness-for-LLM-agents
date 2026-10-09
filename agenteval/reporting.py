@@ -12,6 +12,7 @@ from typing import Any
 
 from agenteval.models import FailureMode, TrialResult
 from agenteval.runner import load_run, trials_from_artifact
+from agenteval.stats import is_flaky, test_pass_counts
 
 __all__ = ["Comparison", "Summary", "TaskDelta", "compare", "summarize"]
 
@@ -46,6 +47,11 @@ class TaskAggregate:
         """Mean wall-clock latency per trial."""
         return self.latency_total_ms / self.trials if self.trials else 0.0
 
+    @property
+    def flaky(self) -> bool:
+        """True when repeated trials both passed and failed this task."""
+        return is_flaky(self.passes, self.trials)
+
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serialisable dict."""
         return {
@@ -54,6 +60,7 @@ class TaskAggregate:
             "trials": self.trials,
             "passes": self.passes,
             "pass_rate": round(self.pass_rate, 4),
+            "flaky": self.flaky,
             "avg_steps": round(self.avg_steps, 2),
             "avg_latency_ms": round(self.avg_latency_ms, 2),
             "cost_usd": round(self.cost_usd, 6),
@@ -116,6 +123,11 @@ class Summary:
         """Run cost in USD under the configured prices."""
         return self.cost_usd
 
+    @property
+    def flaky_tasks(self) -> list[str]:
+        """Task ids that both passed and failed across their trials."""
+        return sorted(task_id for task_id, agg in self.per_task.items() if agg.flaky)
+
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serialisable dict of the whole summary."""
         return {
@@ -134,6 +146,7 @@ class Summary:
             "avg_steps": round(self.avg_steps, 2),
             "avg_latency_ms": round(self.avg_latency_ms, 2),
             "cost_usd": round(self.cost_usd, 6),
+            "flaky_tasks": self.flaky_tasks,
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
             "prices": self.prices,
@@ -217,6 +230,21 @@ class TaskDelta:
     new_passes: int
     new_trials: int
     status: str
+    p_value: float = 1.0
+    method: str = "single-trial"
+    significant: bool = False
+
+    @property
+    def gating(self) -> bool:
+        """Whether CI should treat this delta as a real regression.
+
+        A single-trial run cannot estimate noise, so its regressions are
+        reported as-is; with repetitions only a move past the noise floor
+        should block a merge.
+        """
+        if self.status != "regressed":
+            return False
+        return self.method == "single-trial" or self.significant
 
     @property
     def base_rate(self) -> float:
@@ -248,6 +276,10 @@ class TaskDelta:
             "base_rate": round(self.base_rate, 4),
             "new_rate": round(self.new_rate, 4),
             "status": self.status,
+            "p_value": round(self.p_value, 4),
+            "method": self.method,
+            "significant": self.significant,
+            "gating": self.gating,
         }
 
 
@@ -270,6 +302,20 @@ class Comparison:
         return [delta for delta in self.deltas if delta.status == "regressed"]
 
     @property
+    def gating_regressions(self) -> list[TaskDelta]:
+        """Regressions CI should block on.
+
+        Single-trial runs have no noise estimate so they always gate; runs with
+        repetitions only gate when the drop beats the noise floor.
+        """
+        return [delta for delta in self.regressed if delta.gating]
+
+    @property
+    def noise_regressions(self) -> list[TaskDelta]:
+        """Regressions that repeated trials cannot separate from noise."""
+        return [delta for delta in self.regressed if not delta.gating]
+
+    @property
     def fixed(self) -> list[TaskDelta]:
         """Tasks that got better."""
         return [delta for delta in self.deltas if delta.status == "fixed"]
@@ -287,6 +333,8 @@ class Comparison:
             "base_agent": self.base_agent,
             "new_agent": self.new_agent,
             "regressed": [delta.to_dict() for delta in self.regressed],
+            "gated_regressions": [delta.task_id for delta in self.gating_regressions],
+            "noise_regressions": [delta.task_id for delta in self.noise_regressions],
             "fixed": [delta.to_dict() for delta in self.fixed],
             "unchanged_count": len(self.unchanged),
             "metric_deltas": {key: round(value, 6) for key, value in self.metric_deltas.items()},
@@ -311,8 +359,13 @@ def _classify_delta(base_passes: int, base_trials: int, new_passes: int, new_tri
     return "unchanged"
 
 
-def compare(base: dict[str, Any], new: dict[str, Any]) -> Comparison:
-    """Diff two run artifacts task by task plus the headline metrics."""
+def compare(base: dict[str, Any], new: dict[str, Any], *, alpha: float = 0.05) -> Comparison:
+    """Diff two run artifacts task by task plus the headline metrics.
+
+    Each movement is tested against trial noise with ``agenteval.stats``; a task
+    with one trial per side is reported as movement but marked ``single-trial``,
+    because one sample cannot say anything about variance.
+    """
     base_summary = summarize(base)
     new_summary = summarize(new)
     task_ids = list(dict.fromkeys([*base_summary.per_task, *new_summary.per_task]))
@@ -322,6 +375,12 @@ def compare(base: dict[str, Any], new: dict[str, Any]) -> Comparison:
         new_agg = new_summary.per_task.get(task_id)
         if base_agg is None or new_agg is None:
             continue
+        status = _classify_delta(
+            base_agg.passes, base_agg.trials, new_agg.passes, new_agg.trials
+        )
+        check = test_pass_counts(
+            base_agg.passes, base_agg.trials, new_agg.passes, new_agg.trials, alpha=alpha
+        )
         deltas.append(
             TaskDelta(
                 task_id=task_id,
@@ -330,9 +389,10 @@ def compare(base: dict[str, Any], new: dict[str, Any]) -> Comparison:
                 base_trials=base_agg.trials,
                 new_passes=new_agg.passes,
                 new_trials=new_agg.trials,
-                status=_classify_delta(
-                    base_agg.passes, base_agg.trials, new_agg.passes, new_agg.trials
-                ),
+                status=status,
+                p_value=check.p_value,
+                method=check.method,
+                significant=check.significant and status != "unchanged",
             )
         )
     metric_deltas = {
@@ -387,6 +447,12 @@ def render_summary(summary: Summary) -> str:
             lines.append(f"  {mode:<14} {count}")
     else:
         lines.append("  none")
+    if summary.flaky_tasks:
+        lines.append("")
+        lines.append(f"flaky tasks (0 < pass rate < 1 over {summary.trials_per_task} trials)")
+        for task_id in summary.flaky_tasks:
+            agg = summary.per_task[task_id]
+            lines.append(f"  {task_id:<26} {agg.passes}/{agg.trials}")
     lines.append("")
     lines.append("per task")
     lines.append(f"  {'task':<26} {'pass':>6} {'steps':>6} {'ms':>8}  failures")
@@ -397,6 +463,16 @@ def render_summary(summary: Summary) -> str:
             f" {agg.avg_latency_ms:>8.2f}  {modes}"
         )
     return "\n".join(lines)
+
+
+def _noise_note(delta: TaskDelta) -> str:
+    """Describe how confident the harness is about one task movement."""
+    if delta.method == "single-trial":
+        return "  (1 trial per side: no noise estimate)"
+    if delta.status == "unchanged":
+        return ""
+    verdict = "significant" if delta.significant else "within noise"
+    return f"  (p={delta.p_value:.4f}, {delta.method}, {verdict})"
 
 
 def render_comparison(comparison: Comparison) -> str:
@@ -417,11 +493,16 @@ def render_comparison(comparison: Comparison) -> str:
     lines.append("")
     lines.append(f"fixed      {len(comparison.fixed)}")
     for delta in comparison.fixed:
-        lines.append(f"  + {delta.task_id:<24} {delta.base} -> {delta.new}")
+        lines.append(f"  + {delta.task_id:<24} {delta.base} -> {delta.new}{_noise_note(delta)}")
     lines.append(f"regressed  {len(comparison.regressed)}")
     for delta in comparison.regressed:
-        lines.append(f"  - {delta.task_id:<24} {delta.base} -> {delta.new}")
+        lines.append(f"  - {delta.task_id:<24} {delta.base} -> {delta.new}{_noise_note(delta)}")
     lines.append(f"unchanged  {len(comparison.unchanged)}")
+    if comparison.regressed:
+        lines.append(
+            f"gating     {len(comparison.gating_regressions)} of {len(comparison.regressed)}"
+            " regression(s) exceed the noise floor"
+        )
     if comparison.only_in_base or comparison.only_in_new:
         lines.append("")
         if comparison.only_in_base:

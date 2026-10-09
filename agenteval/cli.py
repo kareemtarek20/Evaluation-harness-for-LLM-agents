@@ -105,17 +105,24 @@ def cmd_compare(args: argparse.Namespace) -> int:
     """Diff two runs; exit 1 on regression when asked to gate CI."""
     base = load_run(args.base)
     new = load_run(args.new)
-    result = compare(base, new)
+    result = compare(base, new, alpha=args.alpha)
     if args.json:
         print(json.dumps(result.to_dict(), indent=2))
     else:
         print(render_comparison(result))
-    if result.regressed and args.fail_on_regression:
-        names = ", ".join(delta.task_id for delta in result.regressed)
-        print(f"\nFAIL: {len(result.regressed)} regression(s): {names}", file=sys.stderr)
+    gating = result.gating_regressions
+    if gating and args.fail_on_regression:
+        names = ", ".join(delta.task_id for delta in gating)
+        print(
+            f"\nFAIL: {len(gating)} regression(s) beyond noise (alpha={args.alpha}): {names}",
+            file=sys.stderr,
+        )
         return 1
-    if result.regressed:
-        print(f"\nwarning: {len(result.regressed)} regression(s), not gating", file=sys.stderr)
+    if gating:
+        print(f"\nwarning: {len(gating)} regression(s), not gating", file=sys.stderr)
+    if result.noise_regressions and not args.json:
+        names = ", ".join(delta.task_id for delta in result.noise_regressions)
+        print(f"\nwithin noise: {names}", file=sys.stderr)
     return 0
 
 
@@ -178,7 +185,10 @@ def build_parser() -> argparse.ArgumentParser:
     gate.add_argument(
         "--fail-on-regression",
         action="store_true",
-        help="exit 1 if any task got worse",
+        help="exit 1 if any task got worse than the baseline beyond noise",
+    )
+    gate.add_argument(
+        "--alpha", type=float, default=0.05, help="significance level for regression gating"
     )
     gate.add_argument("--json", action="store_true")
     gate.set_defaults(func=cmd_compare)

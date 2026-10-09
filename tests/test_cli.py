@@ -52,7 +52,7 @@ def test_compare_gates_on_regression(tmp_path: Path, capsys: pytest.CaptureFixtu
     code = main(["compare", str(base), str(new), "--fail-on-regression"])
     captured = capsys.readouterr()
     assert code == 1
-    assert "FAIL: 1 regression(s): calc_power" in captured.err
+    assert "FAIL: 1 regression(s) beyond noise (alpha=0.05): calc_power" in captured.err
 
     assert main(["compare", str(new), str(new), "--fail-on-regression"]) == 0
 

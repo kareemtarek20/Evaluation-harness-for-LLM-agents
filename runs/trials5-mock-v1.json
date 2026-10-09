@@ -1,0 +1,1637 @@
+{
+  "schema_version": 1,
+  "run_id": "20261009T133035Z-4271ecd8",
+  "agent": "mock:v1",
+  "model": "",
+  "label": "stage-6 baseline (mock v1, 5 trials)",
+  "task_source": "tasks\\basic.json",
+  "trials_per_task": 5,
+  "started_at": "2026-10-09T13:30:35+00:00",
+  "finished_at": "2026-10-09T13:30:35+00:00",
+  "config": {
+    "system_preset": "",
+    "max_tokens": "",
+    "temperature": ""
+  },
+  "prices": {
+    "input_per_mtok": 0.0,
+    "output_per_mtok": 0.0,
+    "source": "unpriced-model"
+  },
+  "task_ids": [
+    "calc_power",
+    "calc_meals",
+    "kb_meals",
+    "kb_freeze",
+    "kb_refund",
+    "kb_rate_limit",
+    "calc_hotel",
+    "calc_budget_split",
+    "no_tool_sick_days",
+    "hallucination_teleport"
+  ],
+  "categories": {
+    "calc_power": "math",
+    "calc_meals": "math",
+    "kb_meals": "retrieval",
+    "kb_freeze": "retrieval",
+    "kb_refund": "retrieval",
+    "kb_rate_limit": "retrieval",
+    "calc_hotel": "multi_step",
+    "calc_budget_split": "multi_step",
+    "no_tool_sick_days": "efficiency",
+    "hallucination_teleport": "hallucination"
+  },
+  "results": [
+    {
+      "task_id": "calc_power",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.066,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.007,
+      "input_tokens": 156,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "A trip costs 75 USD per day for 3 days?",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.005,
+      "input_tokens": 129,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 117,
+      "output_tokens": 42,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The freeze usually starts in mid-October.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 42,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 123,
+      "output_tokens": 33,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Refunds are instant.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 33,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Standard keys allow 100 requests per minute.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.006,
+      "input_tokens": 195,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Hotels are capped at 180 USD per night.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.005,
+      "input_tokens": 186,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The budget is 5000 to 25000 USD.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.039,
+      "input_tokens": 93,
+      "output_tokens": 63,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 0,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 123,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_power",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.029,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 156,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "A trip costs 75 USD per day for 3 days?",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 117,
+      "output_tokens": 42,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The freeze usually starts in mid-October.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 42,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 123,
+      "output_tokens": 33,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Refunds are instant.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 33,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Standard keys allow 100 requests per minute.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 195,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Hotels are capped at 180 USD per night.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 186,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The budget is 5000 to 25000 USD.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.023,
+      "input_tokens": 93,
+      "output_tokens": 63,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 1,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 123,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_power",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.021,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 156,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "A trip costs 75 USD per day for 3 days?",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 117,
+      "output_tokens": 42,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The freeze usually starts in mid-October.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 42,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 123,
+      "output_tokens": 33,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Refunds are instant.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 33,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 129,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Standard keys allow 100 requests per minute.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 195,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Hotels are capped at 180 USD per night.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 186,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The budget is 5000 to 25000 USD.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.02,
+      "input_tokens": 93,
+      "output_tokens": 63,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 2,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 123,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_power",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.017,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 156,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "A trip costs 75 USD per day for 3 days?",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 117,
+      "output_tokens": 42,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The freeze usually starts in mid-October.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 42,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 123,
+      "output_tokens": 33,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Refunds are instant.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 33,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 129,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Standard keys allow 100 requests per minute.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 195,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Hotels are capped at 180 USD per night.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 186,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The budget is 5000 to 25000 USD.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.022,
+      "input_tokens": 93,
+      "output_tokens": 63,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 3,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 123,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_power",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": true,
+      "answer_ok": true,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "ok",
+      "steps": 2,
+      "latency_ms": 0.017,
+      "input_tokens": 117,
+      "output_tokens": 57,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "It is 1024.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "2 ** 10"
+            },
+            "output": "1024",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 57,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_meals",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 156,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "A trip costs 75 USD per day for 3 days?",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 156,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_meals",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 129,
+      "output_tokens": 54,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "I believe meals are reimbursed at 50 USD per day.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 54,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_freeze",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 117,
+      "output_tokens": 42,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The freeze usually starts in mid-October.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 117,
+        "output_tokens": 42,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_refund",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 123,
+      "output_tokens": 33,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Refunds are instant.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 33,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "kb_rate_limit",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.004,
+      "input_tokens": 129,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Standard keys allow 100 requests per minute.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 129,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_hotel",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 195,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Hotels are capped at 180 USD per night.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 195,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "calc_budget_split",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": false,
+      "forbidden_used": [],
+      "missing_required": [
+        "calculator",
+        "kb_search"
+      ],
+      "failure_mode": "missing_tool",
+      "steps": 1,
+      "latency_ms": 0.002,
+      "input_tokens": 186,
+      "output_tokens": 45,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "The budget is 5000 to 25000 USD.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 186,
+        "output_tokens": 45,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "no_tool_sick_days",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": true,
+      "tools_ok": false,
+      "forbidden_used": [
+        "calculator"
+      ],
+      "missing_required": [],
+      "failure_mode": "forbidden_tool",
+      "steps": 2,
+      "latency_ms": 0.018,
+      "input_tokens": 93,
+      "output_tokens": 63,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Employees get 5 sick days.",
+        "tool_calls": [
+          {
+            "step": 1,
+            "tool": "calculator",
+            "input": {
+              "expression": "5 + 0"
+            },
+            "output": "5",
+            "is_error": false
+          }
+        ],
+        "steps": 2,
+        "error": null,
+        "input_tokens": 93,
+        "output_tokens": 63,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "task_id": "hallucination_teleport",
+      "trial": 4,
+      "agent": "mock:v1",
+      "passed": false,
+      "answer_ok": false,
+      "tools_ok": true,
+      "forbidden_used": [],
+      "missing_required": [],
+      "failure_mode": "wrong_answer",
+      "steps": 1,
+      "latency_ms": 0.003,
+      "input_tokens": 123,
+      "output_tokens": 48,
+      "cost_usd": 0.0,
+      "judge_verdict": "",
+      "judge_rationale": "",
+      "result": {
+        "answer": "Teleportation is reimbursed at 100 USD per trip.",
+        "tool_calls": [],
+        "steps": 1,
+        "error": null,
+        "input_tokens": 123,
+        "output_tokens": 48,
+        "model": "mock:v1",
+        "finish_reason": "stop"
+      }
+    }
+  ]
+}
