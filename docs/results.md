@@ -134,7 +134,7 @@ the answer was never going to be right.
 
 ```bash
 pip install -e ".[dev]"
-python -m pytest                                   # 198 tests
+python -m pytest                                   # 211 tests
 python -m ruff check .                              # clean
 
 # the two configurations on both suites, 5 trials each

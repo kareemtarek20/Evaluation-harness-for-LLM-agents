@@ -22,3 +22,7 @@ Thumbs.db
 
 # Local scratch (committed run artifacts are added explicitly with -f)
 runs/.scratch/
+
+# Generated trace pages; one sample is committed so docs can link it
+site/*
+!site/trace-stage8-basic-v2-trials5.html

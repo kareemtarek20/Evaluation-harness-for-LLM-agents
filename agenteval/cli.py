@@ -1,4 +1,4 @@
-"""Command-line interface: run, report, compare, validate.
+"""Command-line interface: run, report, compare, validate, viewer.
 
 `compare --fail-on-regression` is the CI gate: it exits 1 when any task got
 worse, so a pull request that degrades the agent cannot merge green.
@@ -23,6 +23,7 @@ from agenteval.taskset import (
     load_tasks,
     validate_task_files,
 )
+from agenteval.viewer import write_html
 
 __all__ = ["build_parser", "main"]
 
@@ -179,6 +180,17 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_view(args: argparse.Namespace) -> int:
+    """Write a self-contained HTML trace page for a saved run."""
+    destination = Path(args.out) if args.out else Path("site") / f"trace-{Path(args.run).stem}.html"
+    try:
+        written = write_html(args.run, destination)
+    except (ValueError, OSError) as exc:
+        raise SystemExit(f"cannot render trace: {exc}") from exc
+    print(f"trace -> {written} (open it in a browser)")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Return the argument parser for the ``agenteval`` command."""
     parser = argparse.ArgumentParser(
@@ -239,6 +251,11 @@ def build_parser() -> argparse.ArgumentParser:
     validate = subparsers.add_parser("validate", help="check task files")
     validate.add_argument("tasks", nargs="+", default=["tasks"])
     validate.set_defaults(func=cmd_validate)
+
+    view = subparsers.add_parser("viewer", help="write an HTML trace page for a saved run")
+    view.add_argument("run", help="run JSON produced by 'agenteval run'")
+    view.add_argument("--out", help="destination HTML file (default site/trace-<run>.html)")
+    view.set_defaults(func=cmd_view)
     return parser
 
 

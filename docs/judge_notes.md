@@ -118,7 +118,7 @@ not task suites (left alone): judge_labels.json
 ok: 56 tasks in 2 file(s); categories: {...}                   # exit 0
 ```
 
-`python -m pytest` covers the rest offline (198 tests, 44 of them in
+`python -m pytest` covers the rest offline (211 tests, 44 of them in
 `tests/test_judge.py`): every accepted and rejected reply shape, prompt
 construction and truncation, kappa against hand-computed tables (perfect,
 complete disagreement, and the balanced 40-item case where po=0.75 gives

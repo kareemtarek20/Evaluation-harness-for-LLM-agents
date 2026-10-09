@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>AgentEval trace 20261009T135919Z-c8c1809c</title>
+<style>
+:root { --ok:#0a7d33; --bad:#b42318; --warn:#b54708; --line:#d9dde3; --ink:#15181d; }
+* { box-sizing: border-box; }
+body { font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+       margin: 0; color: var(--ink); background: #f6f7f9; }
+header { background: #fff; border-bottom: 1px solid var(--line); padding: 16px 24px; }
+h1 { font-size: 18px; margin: 0 0 6px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: #454f5c; font-size: 13px; }
+main { padding: 16px 24px 40px; max-width: 1100px; }
+.toolbar { display: flex; gap: 16px; align-items: center; margin: 4px 0 20px; }
+.task { background: #fff; border: 1px solid var(--line); border-radius: 8px; margin: 0 0 14px; }
+.task > h2 { font-size: 15px; margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line);
+             display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.trial { padding: 10px 14px; border-bottom: 1px solid #eef0f3; }
+.trial:last-child { border-bottom: 0; }
+.badge { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+         text-transform: uppercase; letter-spacing: .02em; }
+.badge.pass { background: #e3f4e8; color: var(--ok); }
+.badge.fail { background: #fdeceb; color: var(--bad); }
+.badge.mode { background: #fdf3e3; color: var(--warn); }
+.kv { color: #55606d; font-size: 12px; margin: 2px 0 6px; }
+pre { background: #f2f4f7; border-radius: 6px; padding: 8px 10px; margin: 4px 0;
+      white-space: pre-wrap; word-break: break-word; font-size: 12.5px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+ol.steps { margin: 6px 0 0; padding-left: 0; list-style: none; }
+ol.steps > li { border-left: 3px solid var(--line); padding: 0 0 6px 10px; margin: 0 0 8px; }
+ol.steps > li.err { border-left-color: var(--bad); }
+.label { font-weight: 700; font-size: 12px; color: #3a424d; }
+.hide { display: none; }
+</style></head><body>
+<header>
+  <h1>AgentEval trace &mdash; 20261009T135919Z-c8c1809c</h1>
+  <div class="meta">
+    <span>agent <b>mock:v2</b></span>
+    <span>model n/a</span>
+    <span>label stage-8 config v2 on basic</span>
+    <span>suite tasks\basic.json</span>
+    <span>10 tasks x 5 trials = 50 trials</span>
+    <span>success 90.0% (45/50)</span>
+    <span>tool accuracy 100.0%</span>
+    <span>avg steps 2.10</span>
+    <span>cost $0.0822</span>
+  </div>
+</header>
+<main>
+  <div class="toolbar">
+    <label><input type="checkbox" id="only-failures"> failures only</label>
+    <label>mode <select id="mode-filter"><option value="all">all</option><option value="tool_error">tool_error</option></select></label>
+  </div>
+<section class="task" data-task="calc_budget_split">
+  <h2>calc_budget_split <span class="badge pass">5/5 passed</span> <span class="kv">multi_step &middot; avg 3.00 steps &middot; $0.009990</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 3 steps &middot; 0.21 ms &middot; 186 in / 96 out tokens &middot; $0.001998</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;spend approval thresholds&quot;
+}</pre><pre>[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;(5000 + 25000) / 2&quot;
+}</pre><pre>15000</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Midpoint of the director band is 15000 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 3 steps &middot; 0.21 ms &middot; 186 in / 96 out tokens &middot; $0.001998</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;spend approval thresholds&quot;
+}</pre><pre>[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;(5000 + 25000) / 2&quot;
+}</pre><pre>15000</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Midpoint of the director band is 15000 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 3 steps &middot; 0.20 ms &middot; 186 in / 96 out tokens &middot; $0.001998</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;spend approval thresholds&quot;
+}</pre><pre>[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;(5000 + 25000) / 2&quot;
+}</pre><pre>15000</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Midpoint of the director band is 15000 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 3 steps &middot; 0.21 ms &middot; 186 in / 96 out tokens &middot; $0.001998</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;spend approval thresholds&quot;
+}</pre><pre>[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;(5000 + 25000) / 2&quot;
+}</pre><pre>15000</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Midpoint of the director band is 15000 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 3 steps &middot; 0.20 ms &middot; 186 in / 96 out tokens &middot; $0.001998</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;spend approval thresholds&quot;
+}</pre><pre>[fin-budget-approval] Spend approval thresholds :: Team spend below 5000 USD is self-approved.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;(5000 + 25000) / 2&quot;
+}</pre><pre>15000</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Midpoint of the director band is 15000 USD.</pre>
+</article>
+</section>
+<section class="task" data-task="calc_hotel">
+  <h2>calc_hotel <span class="badge pass">5/5 passed</span> <span class="kv">multi_step &middot; avg 3.00 steps &middot; $0.011025</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 3 steps &middot; 0.25 ms &middot; 195 in / 108 out tokens &middot; $0.002205</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;hotel cap per night domestic&quot;
+}</pre><pre>[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.
+[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;180 * 7&quot;
+}</pre><pre>1260</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>The cap is 180 per night, so 7 nights is 1260 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 3 steps &middot; 0.24 ms &middot; 195 in / 108 out tokens &middot; $0.002205</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;hotel cap per night domestic&quot;
+}</pre><pre>[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.
+[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;180 * 7&quot;
+}</pre><pre>1260</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>The cap is 180 per night, so 7 nights is 1260 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 3 steps &middot; 0.24 ms &middot; 195 in / 108 out tokens &middot; $0.002205</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;hotel cap per night domestic&quot;
+}</pre><pre>[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.
+[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;180 * 7&quot;
+}</pre><pre>1260</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>The cap is 180 per night, so 7 nights is 1260 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 3 steps &middot; 0.31 ms &middot; 195 in / 108 out tokens &middot; $0.002205</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;hotel cap per night domestic&quot;
+}</pre><pre>[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.
+[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;180 * 7&quot;
+}</pre><pre>1260</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>The cap is 180 per night, so 7 nights is 1260 USD.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 3 steps &middot; 0.23 ms &middot; 195 in / 108 out tokens &middot; $0.002205</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;hotel cap per night domestic&quot;
+}</pre><pre>[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.
+[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-pto] Paid time off accrual :: Days above the rollover cap are paid out at 60 USD per day.</pre></li>
+    <li class="step"><span class="label">2. calculator</span><pre>{
+  &quot;expression&quot;: &quot;180 * 7&quot;
+}</pre><pre>1260</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>The cap is 180 per night, so 7 nights is 1260 USD.</pre>
+</article>
+</section>
+<section class="task" data-task="calc_meals">
+  <h2>calc_meals <span class="badge pass">5/5 passed</span> <span class="kv">math &middot; avg 2.00 steps &middot; $0.007065</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.03 ms &middot; 156 in / 63 out tokens &middot; $0.001413</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. calculator</span><pre>{
+  &quot;expression&quot;: &quot;75 * 3&quot;
+}</pre><pre>225</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>It is 225 USD total.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.02 ms &middot; 156 in / 63 out tokens &middot; $0.001413</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. calculator</span><pre>{
+  &quot;expression&quot;: &quot;75 * 3&quot;
+}</pre><pre>225</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>It is 225 USD total.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.01 ms &middot; 156 in / 63 out tokens &middot; $0.001413</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. calculator</span><pre>{
+  &quot;expression&quot;: &quot;75 * 3&quot;
+}</pre><pre>225</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>It is 225 USD total.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.01 ms &middot; 156 in / 63 out tokens &middot; $0.001413</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. calculator</span><pre>{
+  &quot;expression&quot;: &quot;75 * 3&quot;
+}</pre><pre>225</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>It is 225 USD total.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.01 ms &middot; 156 in / 63 out tokens &middot; $0.001413</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. calculator</span><pre>{
+  &quot;expression&quot;: &quot;75 * 3&quot;
+}</pre><pre>225</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>It is 225 USD total.</pre>
+</article>
+</section>
+<section class="task" data-task="calc_power">
+  <h2>calc_power <span class="badge fail">0/5 passed</span> <span class="kv">math &middot; avg 2.00 steps &middot; $0.006480</span></h2>
+<article class="trial" data-passed="false" data-mode="tool_error">
+  <span class="badge fail">tool_error</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.05 ms &middot; 117 in / 63 out tokens &middot; $0.001296</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step err"><span class="label">1. calculator</span> <span class="badge fail">tool error</span><pre>{
+  &quot;expression&quot;: &quot;2 ^ 10&quot;
+}</pre><pre>error: unsafe expression (unsupported syntax: BitXor)</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Cannot compute, the tool failed.</pre>
+</article>
+<article class="trial" data-passed="false" data-mode="tool_error">
+  <span class="badge fail">tool_error</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.02 ms &middot; 117 in / 63 out tokens &middot; $0.001296</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step err"><span class="label">1. calculator</span> <span class="badge fail">tool error</span><pre>{
+  &quot;expression&quot;: &quot;2 ^ 10&quot;
+}</pre><pre>error: unsafe expression (unsupported syntax: BitXor)</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Cannot compute, the tool failed.</pre>
+</article>
+<article class="trial" data-passed="false" data-mode="tool_error">
+  <span class="badge fail">tool_error</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.02 ms &middot; 117 in / 63 out tokens &middot; $0.001296</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step err"><span class="label">1. calculator</span> <span class="badge fail">tool error</span><pre>{
+  &quot;expression&quot;: &quot;2 ^ 10&quot;
+}</pre><pre>error: unsafe expression (unsupported syntax: BitXor)</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Cannot compute, the tool failed.</pre>
+</article>
+<article class="trial" data-passed="false" data-mode="tool_error">
+  <span class="badge fail">tool_error</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.02 ms &middot; 117 in / 63 out tokens &middot; $0.001296</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step err"><span class="label">1. calculator</span> <span class="badge fail">tool error</span><pre>{
+  &quot;expression&quot;: &quot;2 ^ 10&quot;
+}</pre><pre>error: unsafe expression (unsupported syntax: BitXor)</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Cannot compute, the tool failed.</pre>
+</article>
+<article class="trial" data-passed="false" data-mode="tool_error">
+  <span class="badge fail">tool_error</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.02 ms &middot; 117 in / 63 out tokens &middot; $0.001296</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step err"><span class="label">1. calculator</span> <span class="badge fail">tool error</span><pre>{
+  &quot;expression&quot;: &quot;2 ^ 10&quot;
+}</pre><pre>error: unsafe expression (unsupported syntax: BitXor)</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>Cannot compute, the tool failed.</pre>
+</article>
+</section>
+<section class="task" data-task="hallucination_teleport">
+  <h2>hallucination_teleport <span class="badge pass">5/5 passed</span> <span class="kv">hallucination &middot; avg 2.00 steps &middot; $0.007695</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.17 ms &middot; 123 in / 78 out tokens &middot; $0.001539</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;teleportation reimbursement&quot;
+}</pre><pre>No matching records for query: teleportation reimbursement</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>There is no information about that in the knowledge base.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.18 ms &middot; 123 in / 78 out tokens &middot; $0.001539</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;teleportation reimbursement&quot;
+}</pre><pre>No matching records for query: teleportation reimbursement</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>There is no information about that in the knowledge base.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.17 ms &middot; 123 in / 78 out tokens &middot; $0.001539</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;teleportation reimbursement&quot;
+}</pre><pre>No matching records for query: teleportation reimbursement</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>There is no information about that in the knowledge base.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.18 ms &middot; 123 in / 78 out tokens &middot; $0.001539</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;teleportation reimbursement&quot;
+}</pre><pre>No matching records for query: teleportation reimbursement</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>There is no information about that in the knowledge base.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.17 ms &middot; 123 in / 78 out tokens &middot; $0.001539</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;teleportation reimbursement&quot;
+}</pre><pre>No matching records for query: teleportation reimbursement</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>There is no information about that in the knowledge base.</pre>
+</article>
+</section>
+<section class="task" data-task="kb_freeze">
+  <h2>kb_freeze <span class="badge pass">5/5 passed</span> <span class="kv">retrieval &middot; avg 2.00 steps &middot; $0.008730</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.30 ms &middot; 117 in / 93 out tokens &middot; $0.001746</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;change freeze start date&quot;
+}</pre><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.20 ms &middot; 117 in / 93 out tokens &middot; $0.001746</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;change freeze start date&quot;
+}</pre><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.20 ms &middot; 117 in / 93 out tokens &middot; $0.001746</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;change freeze start date&quot;
+}</pre><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.36 ms &middot; 117 in / 93 out tokens &middot; $0.001746</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;change freeze start date&quot;
+}</pre><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.20 ms &middot; 117 in / 93 out tokens &middot; $0.001746</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;change freeze start date&quot;
+}</pre><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[ops-deploy-window] Release windows and change freeze :: The year-end change freeze starts on November 24.</pre>
+</article>
+</section>
+<section class="task" data-task="kb_meals">
+  <h2>kb_meals <span class="badge pass">5/5 passed</span> <span class="kv">retrieval &middot; avg 2.00 steps &middot; $0.009360</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.35 ms &middot; 129 in / 99 out tokens &middot; $0.001872</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;meal per diem domestic&quot;
+}</pre><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.20 ms &middot; 129 in / 99 out tokens &middot; $0.001872</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;meal per diem domestic&quot;
+}</pre><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.40 ms &middot; 129 in / 99 out tokens &middot; $0.001872</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;meal per diem domestic&quot;
+}</pre><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.41 ms &middot; 129 in / 99 out tokens &middot; $0.001872</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;meal per diem domestic&quot;
+}</pre><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.19 ms &middot; 129 in / 99 out tokens &middot; $0.001872</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;meal per diem domestic&quot;
+}</pre><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.
+[hr-expense-hotel] Hotel cap and booking lead time :: Domestic hotels are capped at 180 USD per night.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[hr-expense-meals] Meal per-diem on business travel :: Domestic trips reimburse meals up to 75 USD per day.</pre>
+</article>
+</section>
+<section class="task" data-task="kb_rate_limit">
+  <h2>kb_rate_limit <span class="badge pass">5/5 passed</span> <span class="kv">retrieval &middot; avg 2.00 steps &middot; $0.009135</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.23 ms &middot; 129 in / 96 out tokens &middot; $0.001827</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;API rate limit requests per minute&quot;
+}</pre><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.21 ms &middot; 129 in / 96 out tokens &middot; $0.001827</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;API rate limit requests per minute&quot;
+}</pre><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.21 ms &middot; 129 in / 96 out tokens &middot; $0.001827</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;API rate limit requests per minute&quot;
+}</pre><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.39 ms &middot; 129 in / 96 out tokens &middot; $0.001827</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;API rate limit requests per minute&quot;
+}</pre><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.21 ms &middot; 129 in / 96 out tokens &middot; $0.001827</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;API rate limit requests per minute&quot;
+}</pre><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[ops-oncall] On-call response targets :: The primary responder must acknowledge a page within 5 minutes.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[api-rate-limits] API rate limits per plan :: A standard API key allows 500 requests per minute.</pre>
+</article>
+</section>
+<section class="task" data-task="kb_refund">
+  <h2>kb_refund <span class="badge pass">5/5 passed</span> <span class="kv">retrieval &middot; avg 2.00 steps &middot; $0.007920</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 2 steps &middot; 0.27 ms &middot; 123 in / 81 out tokens &middot; $0.001584</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;refund processing days&quot;
+}</pre><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 2 steps &middot; 0.21 ms &middot; 123 in / 81 out tokens &middot; $0.001584</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;refund processing days&quot;
+}</pre><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 2 steps &middot; 0.22 ms &middot; 123 in / 81 out tokens &middot; $0.001584</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;refund processing days&quot;
+}</pre><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 2 steps &middot; 0.39 ms &middot; 123 in / 81 out tokens &middot; $0.001584</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;refund processing days&quot;
+}</pre><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 2 steps &middot; 0.21 ms &middot; 123 in / 81 out tokens &middot; $0.001584</div>
+  <div class="label">tool calls</div>  <ol class="steps">
+    <li class="step"><span class="label">1. kb_search</span><pre>{
+  &quot;query&quot;: &quot;refund processing days&quot;
+}</pre><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.
+[hr-expense-hotel] Hotel cap and booking lead time :: A booking must be made at least 14 days before check-in to keep the corporate rate.
+[hr-pto] Paid time off accrual :: Employees accrue 22 PTO days per year.</pre></li>
+  </ol>
+  <div class="label">answer</div><pre>[fin-refunds] Refund policy :: Refunds are processed within 7 business days.</pre>
+</article>
+</section>
+<section class="task" data-task="no_tool_sick_days">
+  <h2>no_tool_sick_days <span class="badge pass">5/5 passed</span> <span class="kv">efficiency &middot; avg 1.00 steps &middot; $0.004770</span></h2>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 0 &middot; 1 steps &middot; 0.00 ms &middot; 93 in / 45 out tokens &middot; $0.000954</div>
+  <div class="kv">no tool calls</div>
+  <div class="label">answer</div><pre>Employees get 5 sick days per year.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 1 &middot; 1 steps &middot; 0.00 ms &middot; 93 in / 45 out tokens &middot; $0.000954</div>
+  <div class="kv">no tool calls</div>
+  <div class="label">answer</div><pre>Employees get 5 sick days per year.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 2 &middot; 1 steps &middot; 0.00 ms &middot; 93 in / 45 out tokens &middot; $0.000954</div>
+  <div class="kv">no tool calls</div>
+  <div class="label">answer</div><pre>Employees get 5 sick days per year.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 3 &middot; 1 steps &middot; 0.00 ms &middot; 93 in / 45 out tokens &middot; $0.000954</div>
+  <div class="kv">no tool calls</div>
+  <div class="label">answer</div><pre>Employees get 5 sick days per year.</pre>
+</article>
+<article class="trial" data-passed="true" data-mode="pass">
+  <span class="badge pass">pass</span>
+  <div class="kv">trial 4 &middot; 1 steps &middot; 0.00 ms &middot; 93 in / 45 out tokens &middot; $0.000954</div>
+  <div class="kv">no tool calls</div>
+  <div class="label">answer</div><pre>Employees get 5 sick days per year.</pre>
+</article>
+</section>
+<script>
+var only = document.getElementById('only-failures');
+var modes = document.getElementById('mode-filter');
+function apply() {
+  var cards = document.querySelectorAll('article.trial');
+  for (var i = 0; i < cards.length; i++) {
+    var card = cards[i];
+    var failed = card.getAttribute('data-passed') === 'false';
+    var mode = card.getAttribute('data-mode');
+    var modeOk = modes.value === 'all' || modes.value === mode;
+    card.classList.toggle('hide', !modeOk || (only.checked && !failed));
+  }
+  var tasks = document.querySelectorAll('section.task');
+  for (var j = 0; j < tasks.length; j++) {
+    var left = tasks[j].querySelectorAll('article.trial:not(.hide)').length;
+    tasks[j].classList.toggle('hide', left === 0);
+  }
+}
+only.addEventListener('change', apply);
+modes.addEventListener('change', apply);
+apply();
+</script></main></body></html>

@@ -1,0 +1,92 @@
+name: CI
+
+# Everything here runs offline with no API key: the mock agents replay scripted
+# tool use, so the suite, the gate and the trace viewer are all testable in CI.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Unit tests (pytest)
+        run: pytest -q
+
+      - name: Validate the shipped task suites
+        run: agenteval validate tasks
+
+      - name: Offline demo, 5 trials per task
+        run: |
+          agenteval run --tasks tasks/basic.json --agent mock:v1 --trials 5 \
+            --label "ci baseline" --out runs/ci-baseline-v1.json
+          agenteval run --tasks tasks/basic.json --agent mock:v2 --trials 5 \
+            --label "ci candidate" --out runs/ci-candidate-v2.json
+          agenteval report runs/ci-candidate-v2.json
+
+      - name: Regression gate must fire on the known v1 -> v2 regression
+        run: |
+          set +e
+          agenteval compare runs/ci-baseline-v1.json runs/ci-candidate-v2.json \
+            --fail-on-regression | tee gate.log
+          status=${PIPESTATUS[0]}
+          set -e
+          cat gate.log
+          if [ "$status" -ne 1 ]; then
+            echo "expected exit 1 from the gate, got $status"
+            exit 1
+          fi
+          grep -q "calc_power" gate.log
+
+      - name: Regression gate must stay silent when nothing changed
+        run: |
+          agenteval compare runs/ci-baseline-v1.json runs/ci-baseline-v1.json \
+            --fail-on-regression
+          set +e
+          agenteval compare runs/baseline-mock-v1.json runs/new-mock-v2.json \
+            --fail-on-regression >/dev/null
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "the committed demo pair no longer regresses; update this step"
+            exit 1
+          fi
+
+      - name: Trace viewer renders a run
+        run: agenteval viewer runs/ci-candidate-v2.json --out site/ci-trace.html
+
+      - name: Upload CI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-runs
+          path: |
+            runs/ci-baseline-v1.json
+            runs/ci-candidate-v2.json
+            site/ci-trace.html
+          if-no-files-found: warn
