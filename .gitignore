@@ -1,0 +1,24 @@
+# Secrets
+.env
+.env.*
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Editors / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Local scratch (committed run artifacts are added explicitly with -f)
+runs/.scratch/

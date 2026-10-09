@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agenteval"
+version = "0.1.0"
+description = "Evaluation and regression-testing framework for LLM tool-using agents."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "AgentEval contributors" }]
+dependencies = [
+    # Only runtime dependency: used by AnthropicAgent and AnthropicJudge.
+    # Everything else in the core harness (models, scoring, runner, reporting)
+    # is standard-library only so the offline demo needs no network or keys.
+    "anthropic>=0.40",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+agenteval = "agenteval.cli:main"
+
+[tool.setuptools]
+packages = ["agenteval"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ANN", "D"]
+ignore = [
+    "D203",  # incompatible with D211
+    "D213",  # incompatible with D212
+    "ANN401",  # allow Any for JSON-ish tool payloads
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "ANN"]
+"scripts/*" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
