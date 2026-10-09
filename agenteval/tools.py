@@ -213,9 +213,16 @@ _STOPWORDS = frozenset(
 )
 
 
+def _stem(token: str) -> str:
+    """Crude plural folding so 'logs' matches a query for 'log'."""
+    if len(token) > 4 and token.endswith("s") and not token.endswith("ss"):
+        return token[:-1]
+    return token
+
+
 def _tokens(text: str) -> list[str]:
-    """Lowercase word/number tokens with stopwords removed."""
-    return [token for token in _TOKEN_RE.findall(text.lower()) if token not in _STOPWORDS]
+    """Lowercase word/number tokens, stemmed, with stopwords removed."""
+    return [_stem(token) for token in _TOKEN_RE.findall(text.lower()) if token not in _STOPWORDS]
 
 
 def _sentence_containing(body: str, terms: set[str]) -> str:
