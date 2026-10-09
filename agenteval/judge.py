@@ -14,7 +14,7 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from agenteval.agents import resolve_model
+from agenteval.agents import build_sampling_kwargs, resolve_model
 from agenteval.models import Task
 from agenteval.pricing import PriceTable
 
@@ -208,6 +208,7 @@ class AnthropicJudge:
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.max_answer_chars = max_answer_chars
+        self.sampling_route = ""
         self._client = client
         self.calls = 0
         self.input_tokens = 0
@@ -233,7 +234,9 @@ class AnthropicJudge:
         Raises whatever the SDK or :func:`parse_verdict` raises; the runner
         records a raising judge as an ``ERROR`` verdict instead of a guess.
         """
-        response = self.client().messages.create(
+        create = self.client().messages.create
+        sampling, self.sampling_route = build_sampling_kwargs(self.temperature, create)
+        response = create(
             model=self.model,
             system=JUDGE_SYSTEM,
             messages=[
@@ -245,7 +248,7 @@ class AnthropicJudge:
                 },
             ],
             max_tokens=self.max_tokens,
-            temperature=self.temperature,
+            **sampling,
         )
         self.calls += 1
         self.input_tokens += getattr(response.usage, "input_tokens", 0)

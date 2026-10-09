@@ -1,5 +1,6 @@
 """Stage 3 tests: agent behaviour that the harness depends on."""
 
+import inspect
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -11,6 +12,7 @@ from agenteval.agents import (
     MODEL_ENV_VAR,
     AnthropicAgent,
     MockAgent,
+    build_sampling_kwargs,
     resolve_model,
 )
 from agenteval.models import AgentResult, FailureMode, MatchType, Task, ToolCall
@@ -237,3 +239,68 @@ def test_anthropic_agent_uses_advertised_schemas() -> None:
     assert {tool["name"] for tool in sent["tools"]} == {"calculator", "kb_search"}
     assert sent["temperature"] == 0.0
     assert sent["messages"][0]["content"] == make_task("calc_power").prompt
+
+
+def test_sampling_kwargs_follow_the_declared_shape() -> None:
+    def typed(temperature: float = 1.0) -> None:
+        """Has a temperature parameter."""
+
+    def body_only(extra_body: dict[str, Any] | None = None) -> None:
+        """Only extra_body."""
+
+    def bare() -> None:
+        """Neither."""
+
+    assert build_sampling_kwargs(0.0, typed) == ({"temperature": 0.0}, "parameter")
+    assert build_sampling_kwargs(0.0, body_only) == (
+        {"extra_body": {"temperature": 0.0}},
+        "extra_body",
+    )
+    assert build_sampling_kwargs(0.0, bare) == ({}, "unsupported")
+    assert build_sampling_kwargs(0.5, lambda **kw: None) == ({"temperature": 0.5}, "parameter")
+
+
+def test_agent_uses_extra_body_when_temperature_is_not_declared() -> None:
+    """The bug that made every real run an agent_error on anthropic>=1.12."""
+
+    class BodyOnly:
+        def __init__(self) -> None:
+            self.sent: list[dict[str, Any]] = []
+
+        def create(self, *, extra_body: dict[str, Any] | None = None, **kwargs: Any) -> Any:
+            """Accepts extra_body but not temperature."""
+            self.sent.append({"extra_body": extra_body, **kwargs})
+            return response([block("text", text="done")])
+
+    client = SimpleNamespace(messages=BodyOnly())
+    agent = AnthropicAgent(model="claude-sonnet-4-5", client=client)
+    result = agent.run(make_task("calc_power"), ToolBox())
+    assert result.answer == "done"
+    assert agent.sampling_route == "parameter"  # **kwargs still swallows it
+    assert client.messages.sent[0]["temperature"] == 0.0
+
+
+def test_agent_records_an_unsupported_sampling_shape() -> None:
+    class Rigid:
+        def create(
+            self, *, model: str, system: str, messages: Any, tools: Any, max_tokens: int
+        ) -> Any:
+            """Declares neither temperature nor extra_body."""
+            return response([block("text", text="done")])
+
+    agent = AnthropicAgent(model="claude-sonnet-4-5", client=SimpleNamespace(messages=Rigid()))
+    result = agent.run(make_task("calc_power"), ToolBox())
+    assert not result.crashed
+    assert agent.sampling_route == "unsupported"
+
+
+def test_installed_sdk_accepts_the_sampling_kwargs_we_send() -> None:
+    """Offline guard: our request shape must match the pinned SDK's signature."""
+    anthropic = pytest.importorskip("anthropic")
+    client = anthropic.Anthropic(api_key="not-a-real-key")
+    create = client.messages.create
+    kwargs, route = build_sampling_kwargs(0.0, create)
+    assert route != "unsupported"
+    declared = inspect.signature(create).parameters
+    for name in kwargs:
+        assert name in declared, f"{name} is not a parameter of the installed SDK"

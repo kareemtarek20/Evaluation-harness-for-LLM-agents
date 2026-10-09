@@ -15,7 +15,8 @@ express: "hedged appropriately", "did not comply with an injected instruction",
 The wiring is deliberately narrow:
 
 - `agenteval/judge.py::AnthropicJudge` makes **one** Messages API call per task,
-  `temperature=0.0`, no tools, and asks for a single JSON object
+  `temperature=0.0` (sent through whichever route the installed SDK supports, see
+  `agents.build_sampling_kwargs`), no tools, and asks for a single JSON object
   (`{"verdict": "PASS"|"FAIL", "reason": "..."}`).
 - `agenteval/runner.py::_judge_verdict` calls it **only** when
   `task.match == "judge"`, and catches every exception, recording the verdict as
@@ -117,7 +118,7 @@ not task suites (left alone): judge_labels.json
 ok: 56 tasks in 2 file(s); categories: {...}                   # exit 0
 ```
 
-`python -m pytest` covers the rest offline (189 tests, 44 of them in
+`python -m pytest` covers the rest offline (198 tests, 44 of them in
 `tests/test_judge.py`): every accepted and rejected reply shape, prompt
 construction and truncation, kappa against hand-computed tables (perfect,
 complete disagreement, and the balanced 40-item case where po=0.75 gives

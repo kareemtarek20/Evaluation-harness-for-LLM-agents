@@ -7,6 +7,7 @@ network call; AnthropicAgent is the real tool-use loop.
 
 from __future__ import annotations
 
+import inspect
 import os
 from collections.abc import Mapping
 from dataclasses import dataclass, field
@@ -23,6 +24,7 @@ __all__ = [
     "MODEL_ENV_VAR",
     "SYSTEM_PROMPT_V1",
     "SYSTEM_PROMPT_V2",
+    "build_sampling_kwargs",
 ]
 
 MODEL_ENV_VAR = "AGENTEVAL_MODEL"
@@ -212,6 +214,29 @@ def resolve_model(model: str | None = None) -> str:
     return chosen
 
 
+def build_sampling_kwargs(temperature: float, create: Any) -> tuple[dict[str, Any], str]:
+    """Return the kwargs that request deterministic sampling, and how they got there.
+
+    The installed SDK decides the route: ``temperature`` is a typed parameter on
+    older clients, while newer ones dropped it and only forward unknown fields
+    through ``extra_body``. Passing a keyword the endpoint does not declare
+    raises TypeError before the request is even sent, which would make every
+    real run an ``agent_error`` - so the shape is probed instead of assumed.
+    """
+    try:
+        parameters = inspect.signature(create).parameters.values()
+    except (TypeError, ValueError):
+        return {"temperature": temperature}, "parameter"
+    names = {parameter.name for parameter in parameters}
+    if any(parameter.kind == parameter.VAR_KEYWORD for parameter in parameters):
+        return {"temperature": temperature}, "parameter"
+    if "temperature" in names:
+        return {"temperature": temperature}, "parameter"
+    if "extra_body" in names:
+        return {"extra_body": {"temperature": temperature}}, "extra_body"
+    return {}, "unsupported"
+
+
 class AnthropicAgent:
     """Tool-use loop against the Anthropic Messages API."""
 
@@ -230,6 +255,7 @@ class AnthropicAgent:
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.name = f"anthropic:{self.model}"
+        self.sampling_route = ""
         self._client = client
 
     def client(self) -> Any:
@@ -249,15 +275,17 @@ class AnthropicAgent:
         output_tokens = 0
         steps = 0
         try:
+            create = self.client().messages.create
+            sampling, self.sampling_route = build_sampling_kwargs(self.temperature, create)
             for _step_index in range(task.max_steps):
                 steps += 1
-                response = self.client().messages.create(
+                response = create(
                     model=self.model,
                     system=self.system,
                     messages=messages,
                     tools=toolbox.schemas,
                     max_tokens=self.max_tokens,
-                    temperature=self.temperature,
+                    **sampling,
                 )
                 input_tokens += getattr(response.usage, "input_tokens", 0)
                 output_tokens += getattr(response.usage, "output_tokens", 0)
